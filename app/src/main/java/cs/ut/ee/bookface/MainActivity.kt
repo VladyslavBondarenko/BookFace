@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import com.facebook.*
 
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var callbackManager: CallbackManager
@@ -25,17 +24,11 @@ class MainActivity : AppCompatActivity() {
         callbackManager = CallbackManager.Factory.create()
         fbManager = FBManager()
 
-        save_button.setOnClickListener() {
-            if (fbManager.isLoggedIn()) {
-                fbManager.requestUserData { user, userFriends ->
-                    fbManager.userExistsInDatabase(user) { exists ->
-                        if (!exists) {
-                            fbManager.addUserToDatabase(user)
-                        }
-                    }
-                }
+        fbManager.isLoggedIn { isLoggedIn ->
+            if (isLoggedIn) {
+                Log.i("FBLOGIN", "logged in")
             } else {
-                Log.i("FBLOGIN_JSON_RES", "not logged in")
+                Log.i("FBLOGIN", "not logged in")
             }
         }
 
@@ -43,6 +36,13 @@ class MainActivity : AppCompatActivity() {
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
+                fbManager.requestUserData { user, userFriends ->
+                    fbManager.userExistsInDatabase(user) { exists ->
+                        if (!exists) {
+                            fbManager.addUserToDatabase(user)
+                        }
+                    }
+                }
             }
             override fun onCancel() {
                 Log.i("loginResult", "cancel")
