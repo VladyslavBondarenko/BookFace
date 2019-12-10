@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         fbManager.isLoggedIn { isLoggedIn ->
             if (isLoggedIn) {
-                Log.i("FBLOGIN", "logged in")
+                displayMainFragment()
             } else {
-                Log.i("FBLOGIN", "not logged in")
+                hideMainFragment()
             }
         }
 
@@ -56,5 +56,26 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun displayMainFragment() {
+        val fragmentManager = supportFragmentManager
+        val mainFragment = MainFragment()
+//        val anotherFragment = supportFragmentManager.findFragmentByTag("anotherFragmentTag")
+
+        val transaction = fragmentManager.beginTransaction()
+//        if (anotherFragment != null) transaction.remove(anotherFragment)
+        transaction.add(R.id.fragment_container, mainFragment, "mainFragmentTag")
+            .commit()
+    }
+
+    fun hideMainFragment() {
+        val fragmentManager = supportFragmentManager
+        val mainFragment = supportFragmentManager.findFragmentByTag("mainFragmentTag")
+
+        val transaction = fragmentManager.beginTransaction()
+        if (mainFragment != null)
+            transaction.remove(mainFragment)
+            .commit()
     }
 }
