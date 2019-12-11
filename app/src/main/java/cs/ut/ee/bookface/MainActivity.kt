@@ -12,7 +12,6 @@ import com.facebook.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var callbackManager: CallbackManager
-    lateinit var fbManager: FBManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,24 +21,30 @@ class MainActivity : AppCompatActivity() {
         AppEventsLogger.activateApp(this)
 
         callbackManager = CallbackManager.Factory.create()
-        fbManager = FBManager()
 
-        fbManager.isLoggedIn { isLoggedIn ->
+        FBManager.isLoggedIn { isLoggedIn ->
             if (isLoggedIn) {
-                displayMainFragment()
+                FBManager.getUserId { userId ->
+                    DBUsers.getUserById(userId) { user ->
+                        if (user != null) {
+                            val username = user.get("name") as String
+                            displayMainFragment(username)
+                        }
+                    }
+                }
             } else {
                 hideMainFragment()
             }
         }
 
-        login_button.setReadPermissions(fbManager.permissions_list)
+        login_button.setReadPermissions(FBManager.permissions_list)
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
-                fbManager.requestUserData { user, userFriends ->
-                    fbManager.userExistsInDatabase(user) { exists ->
-                        if (!exists) {
-                            fbManager.addUserToDatabase(user)
+                FBManager.requestUserData { user, userFriends ->
+                    DBUsers.getUserById(user.get("id") as String) { dbUser ->
+                        if (dbUser.isNullOrEmpty()) {
+                            DBUsers.addUserToDatabase(user)
                         }
                     }
                 }
@@ -58,10 +63,14 @@ class MainActivity : AppCompatActivity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun displayMainFragment() {
+    fun displayMainFragment(username: String) {
         val fragmentManager = supportFragmentManager
         val mainFragment = MainFragment()
 //        val anotherFragment = supportFragmentManager.findFragmentByTag("anotherFragmentTag")
+
+        val arguments = Bundle()
+        arguments.putString("username", username)
+        mainFragment.arguments = arguments
 
         val transaction = fragmentManager.beginTransaction()
 //        if (anotherFragment != null) transaction.remove(anotherFragment)
