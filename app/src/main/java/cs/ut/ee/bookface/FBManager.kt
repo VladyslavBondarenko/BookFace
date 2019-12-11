@@ -6,7 +6,9 @@ import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class FBManager {
@@ -28,17 +30,13 @@ class FBManager {
             request.executeAsync()
         }
 
-        fun requestUserData(callback: (HashMap<String, String>, MutableList<String>) -> Unit) {
+        fun requestUserData(callback: (HashMap<String, Serializable>) -> Unit) {
             val request =
                 GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { result, response ->
                     try {
                         Log.i("Facebook user data", result.toString())
-
                         val user = getUserDataFromJson(result)
-                        val userFriends = getUserFriendsIDsFromJson(result)
-
-                        callback(user, userFriends)
-
+                        callback(user)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -49,23 +47,24 @@ class FBManager {
             request.executeAsync()
         }
 
-        fun getUserDataFromJson(result: JSONObject): HashMap<String, String> {
+        fun getUserDataFromJson(result: JSONObject): HashMap<String, Serializable> {
             return hashMapOf(
                 "id" to result.get("id") as String,
                 "name" to result.get("name") as String,
                 "email" to result.get("email") as String,
-                "picture" to ((result.get("picture") as JSONObject).get("data") as JSONObject).get("url") as String
+                "picture" to ((result.get("picture") as JSONObject).get("data") as JSONObject).get("url") as String,
+                "friends" to getUserFriendsIDsFromJson(result)
             )
         }
 
-        fun getUserFriendsIDsFromJson(result: JSONObject): MutableList<String> {
+        fun getUserFriendsIDsFromJson(result: JSONObject): ArrayList<String> {
             val friends = mutableListOf<String>()
             val friendsJSONArray = (result.get("friends") as JSONObject).get("data") as JSONArray
             for (i in 0 until friendsJSONArray.length()) {
                 val item = friendsJSONArray.getJSONObject(i)
                 friends.add(item.get("id").toString())
             }
-            return friends
+            return friends as ArrayList<String>
         }
     }
 }

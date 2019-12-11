@@ -8,6 +8,7 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import com.facebook.*
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
-                FBManager.requestUserData { user, userFriends ->
+                FBManager.requestUserData { user ->
                     DBUsers.getUserById(user.get("id") as String) { dbUser ->
                         if (dbUser == null) {
                             DBUsers.addUserToDatabase(user)
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun displayMainFragment(user: HashMap<String,String>) {
+    fun displayMainFragment(user: HashMap<String,Serializable>) {
         val fragmentManager = supportFragmentManager
         val mainFragment = MainFragment()
         val mainLoggedOutFragment = supportFragmentManager.findFragmentByTag("mainLoggedOutFragmentTag")

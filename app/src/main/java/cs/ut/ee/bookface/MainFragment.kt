@@ -18,7 +18,7 @@ class MainFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val bundle =  this.getArguments()
-        view.nameView.text = bundle?.getString("username")
+        view.nameView.text = bundle?.getString("username") as String
         val pictureUrl = bundle?.getString("picture") as String
         MyAsyncTask().execute(pictureUrl)
         return view
