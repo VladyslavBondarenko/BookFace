@@ -3,9 +3,7 @@ package cs.ut.ee.bookface
 import android.os.Bundle
 import android.util.Log
 import com.facebook.AccessToken
-import com.facebook.AccessTokenTracker
 import com.facebook.GraphRequest
-import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -14,18 +12,6 @@ import kotlin.collections.HashMap
 class FBManager {
     companion object {
         val permissions_list = Arrays.asList("public_profile", "email", "user_friends")
-
-        fun isLoggedIn(callback: (Boolean) -> Unit) {
-            val accessTokenTracker = object : AccessTokenTracker() {
-                override fun onCurrentAccessTokenChanged(
-                    oldAccessToken: AccessToken?,
-                    newAccessToken: AccessToken?
-                ) {
-                    callback(newAccessToken != null && !newAccessToken.isExpired)
-                }
-            }
-            accessTokenTracker.startTracking()
-        }
 
         fun getUserId(callback: (String) -> Unit) {
             val request =

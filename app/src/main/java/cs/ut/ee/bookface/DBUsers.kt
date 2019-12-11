@@ -10,7 +10,9 @@ class DBUsers {
             db.collection("users").whereEqualTo("id", userId)
                 .get()
                 .addOnSuccessListener { documents ->
+                    var exists = false
                     for (document in documents) {
+                        exists = true
                         Log.d("Firebase exists", "${document.id} => ${document.data}")
                         val user = hashMapOf(
                             "id" to document.get("id") as String,
@@ -20,7 +22,9 @@ class DBUsers {
                         )
                         callback(user)
                     }
-                    callback(null)
+                    if (exists == false) {
+                        callback(null)
+                    }
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error getting documents: ", e)

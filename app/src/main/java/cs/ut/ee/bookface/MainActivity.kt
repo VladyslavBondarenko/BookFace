@@ -22,20 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         callbackManager = CallbackManager.Factory.create()
 
-        FBManager.isLoggedIn { isLoggedIn ->
-            if (isLoggedIn) {
-                FBManager.getUserId { userId ->
-                    DBUsers.getUserById(userId) { user ->
-                        if (user != null) {
-                            val username = user.get("name") as String
-                            displayMainFragment(username)
-                        }
-                    }
-                }
-            } else {
-                hideMainFragment()
-            }
-        }
+        hideMainFragment()
+        trackLogin()
 
         login_button.setReadPermissions(FBManager.permissions_list)
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -43,11 +31,12 @@ class MainActivity : AppCompatActivity() {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
                 FBManager.requestUserData { user, userFriends ->
                     DBUsers.getUserById(user.get("id") as String) { dbUser ->
-                        if (dbUser.isNullOrEmpty()) {
+                        if (dbUser == null) {
                             DBUsers.addUserToDatabase(user)
                         }
                     }
                 }
+                actionsAfterLogin()
             }
             override fun onCancel() {
                 Log.i("loginResult", "cancel")
@@ -63,28 +52,58 @@ class MainActivity : AppCompatActivity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun displayMainFragment(username: String) {
+    fun trackLogin() {
+        val accessTokenTracker = object : AccessTokenTracker() {
+            override fun onCurrentAccessTokenChanged(
+                oldAccessToken: AccessToken?,
+                newAccessToken: AccessToken?
+            ) {
+                if (newAccessToken != null && !newAccessToken.isExpired) {
+                    actionsAfterLogin()
+                } else {
+                    hideMainFragment()
+                }
+            }
+        }
+        accessTokenTracker.startTracking()
+    }
+
+    fun actionsAfterLogin() {
+        FBManager.getUserId { userId ->
+            DBUsers.getUserById(userId) { user ->
+                if (user != null) {
+                    displayMainFragment(user)
+                }
+            }
+        }
+    }
+
+    fun displayMainFragment(user: HashMap<String,String>) {
         val fragmentManager = supportFragmentManager
         val mainFragment = MainFragment()
-//        val anotherFragment = supportFragmentManager.findFragmentByTag("anotherFragmentTag")
+        val mainLoggedOutFragment = supportFragmentManager.findFragmentByTag("mainLoggedOutFragmentTag")
 
         val arguments = Bundle()
-        arguments.putString("username", username)
+        arguments.putString("username", user.get("name") as String)
+        arguments.putString("picture", user.get("picture") as String)
         mainFragment.arguments = arguments
 
         val transaction = fragmentManager.beginTransaction()
-//        if (anotherFragment != null) transaction.remove(anotherFragment)
+        if (mainLoggedOutFragment != null) transaction.remove(mainLoggedOutFragment)
         transaction.add(R.id.fragment_container, mainFragment, "mainFragmentTag")
             .commit()
     }
 
     fun hideMainFragment() {
         val fragmentManager = supportFragmentManager
+        val mainLoggedOutFragment = MainLoggedOutFragment()
         val mainFragment = supportFragmentManager.findFragmentByTag("mainFragmentTag")
 
         val transaction = fragmentManager.beginTransaction()
-        if (mainFragment != null)
-            transaction.remove(mainFragment)
-            .commit()
+
+        //fragmentManager doesn't want to remove mainFragment
+        if (mainFragment != null) transaction.remove(mainFragment)
+        transaction.add(R.id.fragment_container, mainLoggedOutFragment, "mainLoggedOutFragmentTag")
+                .commit()
     }
 }
