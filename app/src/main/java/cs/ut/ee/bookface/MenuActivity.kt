@@ -20,8 +20,12 @@ abstract class MenuActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.my_books_button -> {
+            R.id.add_new_book -> {
+                val intent = Intent(this, BookSearchActivity::class.java)
+                startActivity(intent)
                 return true
+            }
+            R.id.my_books_button -> {
             }
             R.id.my_friends_books_button -> {
                 return true
