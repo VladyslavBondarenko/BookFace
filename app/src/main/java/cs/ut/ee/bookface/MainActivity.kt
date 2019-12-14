@@ -7,7 +7,13 @@ import com.facebook.login.LoginResult
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import com.facebook.*
+import kotlinx.android.synthetic.main.action_bar.*
+import kotlinx.android.synthetic.main.fragment_main_logged_out.*
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        setSupportActionBar(toolbar)
+
         FacebookSdk.sdkInitialize(applicationContext)
         AppEventsLogger.activateApp(this)
 
@@ -26,8 +34,7 @@ class MainActivity : AppCompatActivity() {
         hideMainFragment()
         trackLogin()
 
-        login_button.setReadPermissions(FBManager.permissions_list)
-        login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+        val FBLoginCallback = object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
                 FBManager.requestUserData { user ->
@@ -45,12 +52,25 @@ class MainActivity : AppCompatActivity() {
             override fun onError(exception: FacebookException) {
                 Log.i("loginResult", exception.toString())
             }
-        })
+        }
+
+        login_button_action_bar.setReadPermissions(FBManager.permissions_list)
+        login_button_action_bar.registerCallback(callbackManager, FBLoginCallback)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     fun trackLogin() {
