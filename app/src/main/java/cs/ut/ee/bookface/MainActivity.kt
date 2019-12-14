@@ -7,13 +7,7 @@ import com.facebook.login.LoginResult
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
 import com.facebook.*
-import kotlinx.android.synthetic.main.action_bar.*
-import kotlinx.android.synthetic.main.fragment_main_logged_out.*
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
@@ -24,14 +18,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        setSupportActionBar(toolbar)
-
         FacebookSdk.sdkInitialize(applicationContext)
         AppEventsLogger.activateApp(this)
 
         callbackManager = CallbackManager.Factory.create()
 
-        hideMainFragment()
         trackLogin()
 
         val FBLoginCallback = object : FacebookCallback<LoginResult> {
@@ -54,23 +45,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        login_button_action_bar.setReadPermissions(FBManager.permissions_list)
-        login_button_action_bar.registerCallback(callbackManager, FBLoginCallback)
+        login_button.setReadPermissions(FBManager.permissions_list)
+        login_button.registerCallback(callbackManager, FBLoginCallback)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
     }
 
     fun trackLogin() {
@@ -81,8 +62,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (newAccessToken != null && !newAccessToken.isExpired) {
                     actionsAfterLogin()
-                } else {
-                    hideMainFragment()
                 }
             }
         }
@@ -93,38 +72,16 @@ class MainActivity : AppCompatActivity() {
         FBManager.getUserId { userId ->
             DBUsers.getUserById(userId) { user ->
                 if (user != null) {
-                    displayMainFragment(user)
+                    openUserProfile(user)
                 }
             }
         }
     }
 
-    fun displayMainFragment(user: HashMap<String,Serializable>) {
-        val fragmentManager = supportFragmentManager
-        val mainFragment = MainFragment()
-        val mainLoggedOutFragment = supportFragmentManager.findFragmentByTag("mainLoggedOutFragmentTag")
-
-        val arguments = Bundle()
-        arguments.putString("username", user["name"] as String)
-        arguments.putString("picture", user["picture"] as String)
-        mainFragment.arguments = arguments
-
-        val transaction = fragmentManager.beginTransaction()
-        if (mainLoggedOutFragment != null) transaction.remove(mainLoggedOutFragment)
-        transaction.add(R.id.fragment_container, mainFragment, "mainFragmentTag")
-            .commit()
-    }
-
-    fun hideMainFragment() {
-        val fragmentManager = supportFragmentManager
-        val mainLoggedOutFragment = MainLoggedOutFragment()
-        val mainFragment = supportFragmentManager.findFragmentByTag("mainFragmentTag")
-
-        val transaction = fragmentManager.beginTransaction()
-
-        //fragmentManager doesn't want to remove mainFragment
-        if (mainFragment != null) transaction.remove(mainFragment)
-        transaction.add(R.id.fragment_container, mainLoggedOutFragment, "mainLoggedOutFragmentTag")
-                .commit()
+    fun openUserProfile(user: HashMap<String,Serializable>) {
+        val intent = Intent(this, UserProfile::class.java)
+        intent.putExtra("name", user["name"] as String)
+        intent.putExtra("picture", user["picture"] as String)
+        startActivity(intent)
     }
 }

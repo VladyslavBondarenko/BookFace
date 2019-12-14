@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:text="@string/app_name"
-        android:textColor="	#3b5998"
+        android:textColor="@color/com_facebook_blue"
         android:textSize="36sp"
         android:textStyle="bold" />
 
@@ -30,18 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:text="@string/default_username" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/my_books_button" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/my_friends_books_button" />
+        android:layout_margin="8dp"
+        android:text="@string/default_username"
+        android:textColor="@color/com_facebook_blue" />
 
 </LinearLayout>

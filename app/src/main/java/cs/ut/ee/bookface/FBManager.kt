@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
+import com.facebook.login.LoginManager
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.Serializable
@@ -65,6 +66,10 @@ class FBManager {
                 friends.add(item.get("id").toString())
             }
             return friends as ArrayList<String>
+        }
+
+        fun logout() {
+            LoginManager.getInstance().logOut();
         }
     }
 }
