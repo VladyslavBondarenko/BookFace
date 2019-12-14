@@ -13,11 +13,11 @@ import kotlin.collections.HashMap
 
 class FBManager {
     companion object {
-        val permissions_list = Arrays.asList("public_profile", "email", "user_friends")
+        val permissions_list = listOf("public_profile", "email", "user_friends")!!
 
         fun getUserId(callback: (String) -> Unit) {
             val request =
-                GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { result, response ->
+                GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { result, _ ->
                     try {
                         callback(result.get("id").toString())
                     } catch (e: Exception) {
@@ -32,7 +32,7 @@ class FBManager {
 
         fun requestUserData(callback: (HashMap<String, Serializable>) -> Unit) {
             val request =
-                GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { result, response ->
+                GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { result, _ ->
                     try {
                         Log.i("Facebook user data", result.toString())
                         val user = getUserDataFromJson(result)

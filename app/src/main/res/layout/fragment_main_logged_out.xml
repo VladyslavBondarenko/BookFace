@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:text="bookface"
+        android:text="@string/app_name"
         android:textColor="	#3b5998"
         android:textSize="36sp"
         android:textStyle="bold" />

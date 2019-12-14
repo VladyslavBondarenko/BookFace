@@ -24,7 +24,7 @@ class DBUsers {
                         )
                         callback(user)
                     }
-                    if (exists == false) {
+                    if (!exists) {
                         callback(null)
                     }
                 }

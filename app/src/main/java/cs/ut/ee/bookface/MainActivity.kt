@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FacebookSdk.sdkInitialize(getApplicationContext())
+        FacebookSdk.sdkInitialize(applicationContext)
         AppEventsLogger.activateApp(this)
 
         callbackManager = CallbackManager.Factory.create()
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.i("loginResult", "Facebook token: " + loginResult.accessToken.token)
                 FBManager.requestUserData { user ->
-                    DBUsers.getUserById(user.get("id") as String) { dbUser ->
+                    DBUsers.getUserById(user["id"] as String) { dbUser ->
                         if (dbUser == null) {
                             DBUsers.addUserToDatabase(user)
                         }
@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         val mainLoggedOutFragment = supportFragmentManager.findFragmentByTag("mainLoggedOutFragmentTag")
 
         val arguments = Bundle()
-        arguments.putString("username", user.get("name") as String)
-        arguments.putString("picture", user.get("picture") as String)
+        arguments.putString("username", user["name"] as String)
+        arguments.putString("picture", user["picture"] as String)
         mainFragment.arguments = arguments
 
         val transaction = fragmentManager.beginTransaction()
