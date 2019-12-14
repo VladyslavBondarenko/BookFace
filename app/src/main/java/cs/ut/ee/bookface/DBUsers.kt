@@ -20,7 +20,8 @@ class DBUsers {
                             "name" to document.get("name") as String,
                             "email" to document.get("email") as String,
                             "picture" to document.get("picture") as String,
-                            "friends" to document.get("friends") as ArrayList<String>
+                            "friends" to document.get("friends") as ArrayList<String>,
+                            "documentId" to document.id
                         )
                         callback(user)
                     }
@@ -42,6 +43,18 @@ class DBUsers {
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error adding document", e)
+                }
+        }
+
+        fun updateUser(documentId: String, user: HashMap<String, Serializable>) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("users")
+                .document(documentId).set(user)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("Firebase", "DocumentSnapshot updated: ${documentReference}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Firebase", "Error updating document", e)
                 }
         }
     }

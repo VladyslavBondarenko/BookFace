@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
                     DBUsers.getUserById(user["id"] as String) { dbUser ->
                         if (dbUser == null) {
                             DBUsers.addUserToDatabase(user)
+                        } else {
+                            DBUsers.updateUser(dbUser.get("documentId") as String, user)
                         }
                     }
                 }
