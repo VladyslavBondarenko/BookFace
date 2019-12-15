@@ -11,8 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MyBooksListAdapter(
     var c: Context,
-    var books_list: ArrayList<HashMap<String, Any>>
-    //var user_id: String
+    var books_list: ArrayList<HashMap<String, Any>>,
+    var user_id: String
 ) : BaseAdapter() {
     override fun getCount(): Int {
         return books_list.count()
