@@ -8,13 +8,12 @@ import com.facebook.login.LoginManager
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.Serializable
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class FBManager {
     companion object {
-        val permissions_list = listOf("public_profile", "email", "user_friends")!!
+        val permissions_list = listOf("public_profile", "email", "user_friends")
 
         fun getUserId(callback: (String) -> Unit) {
             val request =

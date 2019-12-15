@@ -12,7 +12,7 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var callbackManager: CallbackManager
+    private lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +39,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 actionsAfterLogin()
             }
+
             override fun onCancel() {
                 Log.i("loginResult", "cancel")
             }
+
             override fun onError(exception: FacebookException) {
                 Log.i("loginResult", exception.toString())
             }
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openUserProfile(user: HashMap<String,Serializable>) {
+    fun openUserProfile(user: HashMap<String, Serializable>) {
         val intent = Intent(this, UserProfile::class.java)
         intent.putExtra("name", user["name"] as String)
         intent.putExtra("picture", user["picture"] as String)

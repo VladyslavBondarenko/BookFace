@@ -6,7 +6,7 @@ import java.io.Serializable
 
 class DBUsers {
     companion object {
-        fun getUserById(userId: String, callback: (HashMap<String, Serializable>?)->Unit) {
+        fun getUserById(userId: String, callback: (HashMap<String, Serializable>?) -> Unit) {
             val db = FirebaseFirestore.getInstance()
             db.collection("users").whereEqualTo("id", userId)
                 .get()
@@ -51,7 +51,7 @@ class DBUsers {
             db.collection("users")
                 .document(documentId).set(user)
                 .addOnSuccessListener { documentReference ->
-                    Log.d("Firebase", "DocumentSnapshot updated: ${documentReference}")
+                    Log.d("Firebase", "DocumentSnapshot updated: $documentReference")
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error updating document", e)

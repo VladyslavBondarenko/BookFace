@@ -16,6 +16,7 @@
         android:ems="10"
         android:hint="@string/book_info_hint"
         android:imeOptions="actionDone"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"

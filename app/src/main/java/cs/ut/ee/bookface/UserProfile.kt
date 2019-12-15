@@ -18,10 +18,11 @@ class UserProfile : MenuActivity() {
         MyAsyncTask().execute(pictureUrl)
     }
 
-    inner class MyAsyncTask : AsyncTask<String, Void, Bitmap>(){
+    inner class MyAsyncTask : AsyncTask<String, Void, Bitmap>() {
         override fun doInBackground(vararg params: String): Bitmap {
             return BitmapFactory.decodeStream(URL(params[0]).openConnection().getInputStream())
         }
+
         override fun onPostExecute(result: Bitmap?) {
             userPhotoView.setImageBitmap(result)
         }

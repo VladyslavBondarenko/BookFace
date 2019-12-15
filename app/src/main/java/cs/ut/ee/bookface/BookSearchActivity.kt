@@ -1,11 +1,9 @@
 package cs.ut.ee.bookface
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 
-import android.widget.Toast
 import cs.ut.ee.bookface.models.BookResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,30 +17,30 @@ import kotlinx.android.synthetic.main.book_search_activity.*
 
 
 class BookSearchActivity : MenuActivity() {
-    lateinit var adapter : BooksAdapter
+    lateinit var adapter: BooksAdapter
     var book_list = ArrayList<Book>()
-    val interceptor = HttpLoggingInterceptor().apply {
+    private val interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com/books/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
-            .build()
-    val bookService = retrofit.create(BooksService::class.java)
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://www.googleapis.com/books/v1/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
+        .build()!!
+    private val bookService: BooksService = retrofit.create(BooksService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.book_search_activity)
-        var userId = intent.getStringExtra("userId")
+        val userId = intent.getStringExtra("userId")
         adapter = BooksAdapter(this, book_list, userId)
-        book_listview.setAdapter(adapter)
+        book_listview.adapter = adapter
 
-        search_box.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+        search_box.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val query = v.text.toString()
-                if (!query.isEmpty()){
+                if (query.isNotEmpty()) {
                     searchBooks(query)
                 }
             }
@@ -50,17 +48,21 @@ class BookSearchActivity : MenuActivity() {
         }
     }
 
-    fun searchBooks(query: String) {
+    private fun searchBooks(query: String) {
         progressBar.visibility = View.VISIBLE
         bookService.getBooks(query, 0, 20)
-            .enqueue(object : Callback<BookResponse>{
+            .enqueue(object : Callback<BookResponse> {
                 override fun onFailure(call: Call<BookResponse>, t: Throwable) {
                     progressBar.visibility = View.GONE
                 }
-                override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+
+                override fun onResponse(
+                    call: Call<BookResponse>,
+                    response: Response<BookResponse>
+                ) {
                     book_list.clear()
                     var returned_books = response.body()?.books ?: listOf()
-                    for (b : Book in returned_books){
+                    for (b: Book in returned_books) {
                         book_list.add(b)
                     }
                     adapter.notifyDataSetChanged()

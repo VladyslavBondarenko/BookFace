@@ -10,16 +10,17 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
-import cs.ut.ee.bookface.R
 
 
-class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : String) : BaseAdapter() {
+class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: String) :
+    BaseAdapter() {
     override fun getCount(): Int {
         return books_list.count()
     }
 
     override fun getItemId(position: Int): Long {
-        return books_list[position].hashCode().toLong() //To change body of created functions use File | Settings | File Templates.
+        return books_list[position].hashCode()
+            .toLong() //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getItem(position: Int): Book {
@@ -28,21 +29,17 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
-        if (convertView == null) {
+        view = if (convertView == null) {
             val layoutInflater = LayoutInflater.from(parent?.context)
-            view = layoutInflater.inflate(R.layout.found_book_layout, parent, false)
+            layoutInflater.inflate(R.layout.found_book_layout, parent, false)
         } else {
-            view = convertView
+            convertView
         }
-        val book : Book = getItem(position)
+        val book: Book = getItem(position)
         view.findViewById<TextView>(R.id.book_title).text = book.volumeInfo.title
-        val bookAuthor : String
-        if (book.volumeInfo.authors == null){
-            bookAuthor = "Unknown author"
-
-        }else{
-            bookAuthor = book.volumeInfo.authors.joinToString(separator = ",", postfix = "", prefix= "")
-        }
+        val bookAuthor: String
+        bookAuthor =
+            book.volumeInfo.authors.joinToString(separator = ",", postfix = "", prefix = "")
         view.findViewById<TextView>(R.id.book_author).text = bookAuthor
 
         view.findViewById<TextView>(R.id.add_book_btn).isEnabled = true
@@ -53,7 +50,7 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
             // CHECK IF BOOK ALREADY IN THE LIST
             val db = FirebaseFirestore.getInstance()
 
-            var booksInList : ArrayList<String> = ArrayList()
+            var booksInList: ArrayList<String> = ArrayList()
 
             db.collection("books").whereEqualTo("ownerUserId", user_id)
                 .get()
@@ -62,12 +59,12 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                     for (document in documents) {
                         booksInList.add(document.get("id") as String)
                     }
-                    if (booksInList.contains(book.id)){
-                        var toastText : String = c.getString(R.string.book_already_in_list)
+                    if (booksInList.contains(book.id)) {
+                        val toastText: String = c.getString(R.string.book_already_in_list)
                         Toast.makeText(c, toastText, Toast.LENGTH_LONG).show()
                         view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
                         view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
-                    }else{
+                    } else {
                         val bookDbObject = hashMapOf(
                             "id" to book.id,
                             "title" to book.volumeInfo.title,
@@ -78,8 +75,8 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                         )
                         db.collection("books")
                             .add(bookDbObject)
-                            .addOnSuccessListener { documentReference ->
-                                var toastText : String = c.getString(R.string.book_added)
+                            .addOnSuccessListener {
+                                val toastText: String = c.getString(R.string.book_added)
                                 Toast.makeText(c, toastText, Toast.LENGTH_LONG).show()
                                 view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
                                 view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
@@ -92,10 +89,7 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error getting documents: ", e)
                 }
-
         }
         return view
-
     }
-
 }
