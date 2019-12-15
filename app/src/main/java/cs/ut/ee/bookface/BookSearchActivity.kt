@@ -36,7 +36,8 @@ class BookSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.book_search_activity)
-        adapter = BooksAdapter(book_list, "110786493742750")
+        var userId = intent.getStringExtra("userId")
+        adapter = BooksAdapter(this, book_list, userId)
         book_listview.setAdapter(adapter)
 
         search_box.setOnEditorActionListener { v, actionId, event ->
@@ -64,9 +65,7 @@ class BookSearchActivity : AppCompatActivity() {
                     for (b : Book in returned_books){
                         book_list.add(b)
                     }
-                    Log.i("book info", "in the search_books")
                     adapter.notifyDataSetChanged()
-                    Log.i("book info", "after notify")
                     progressBar.visibility = View.GONE
                 }
             })

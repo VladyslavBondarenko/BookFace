@@ -48,6 +48,7 @@ class FBManager {
             request.executeAsync()
         }
 
+
         fun getUserDataFromJson(result: JSONObject): HashMap<String, Serializable> {
             return hashMapOf(
                 "id" to result.get("id") as String,
