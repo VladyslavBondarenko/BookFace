@@ -42,6 +42,7 @@
         </activity>
         <activity android:name=".UserProfile" />
         <activity android:name=".BookSearchActivity" />
+        <activity android:name=".MyBooksActivity" />
 
     </application>
 

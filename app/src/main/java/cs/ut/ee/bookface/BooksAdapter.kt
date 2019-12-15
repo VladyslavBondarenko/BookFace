@@ -63,7 +63,8 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                     if (booksInList.contains(book.id)){
                         Toast.makeText(c, "The book is already in your list!", Toast.LENGTH_LONG).show()
                         Log.d("AddNewBook", "Book with if ${book.id} is already in the list")
-
+                        view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
+                        view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
                     }else{
                         val bookDbObject = hashMapOf(
                             "id" to book.id,
@@ -78,7 +79,8 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                             .addOnSuccessListener { documentReference ->
                                 Log.d("Firebase", "DocumentSnapshot added with ID: ${documentReference.id}")
                                 Toast.makeText(c, "Book is added to your list", Toast.LENGTH_LONG).show()
-
+                                view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
+                                view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
                             }
                             .addOnFailureListener { e ->
                                 Log.w("Firebase", "Error adding document", e)

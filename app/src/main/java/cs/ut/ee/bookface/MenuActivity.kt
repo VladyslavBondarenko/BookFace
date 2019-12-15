@@ -34,6 +34,16 @@ abstract class MenuActivity : AppCompatActivity() {
                 return true
             }
             R.id.my_books_button -> {
+                FBManager.getUserId { userId ->
+                    DBUsers.getUserById(userId) { user ->
+                        if (user != null) {
+                            var user_id = user["id"]
+                            val intent = Intent(this, MyBooksActivity::class.java)
+                            intent.putExtra("userId", user_id)
+                            startActivity(intent)
+                        }
+                    }
+                }
             }
             R.id.my_friends_books_button -> {
                 return true
