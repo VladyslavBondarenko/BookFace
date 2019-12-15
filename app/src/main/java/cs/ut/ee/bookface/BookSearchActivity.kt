@@ -55,7 +55,6 @@ class BookSearchActivity : MenuActivity() {
         bookService.getBooks(query, 0, 20)
             .enqueue(object : Callback<BookResponse>{
                 override fun onFailure(call: Call<BookResponse>, t: Throwable) {
-                    Toast.makeText(this@BookSearchActivity, "Failed!", Toast.LENGTH_LONG).show()
                     progressBar.visibility = View.GONE
                 }
                 override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {

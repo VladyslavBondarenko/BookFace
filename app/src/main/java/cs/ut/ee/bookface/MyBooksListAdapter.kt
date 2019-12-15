@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import cs.ut.ee.bookface.R
 
 
-class MyBooksListAdapter(var books_list: ArrayList<HashMap<String, Any>>, var user_id : String) : BaseAdapter() {
+class MyBooksListAdapter(var c : Context, var books_list: ArrayList<HashMap<String, Any>>, var user_id : String) : BaseAdapter() {
     override fun getCount(): Int {
         return books_list.count()
     }
@@ -38,12 +38,15 @@ class MyBooksListAdapter(var books_list: ArrayList<HashMap<String, Any>>, var us
         val book: HashMap<String, Any> = getItem(position)
         view.findViewById<TextView>(R.id.book_title).text = book["title"] as String
         view.findViewById<TextView>(R.id.book_author).text = book["author"] as String
-        var curStatus : String
+
+        var bookAvailable  = c.getString(R.string.bookAvailable)
+        var bookTaken : String = c.getString(R.string.bookTaken)
+
         if (book["isAvailable"] as Boolean){
-            view.findViewById<TextView>(R.id.is_available).text = "Available"
+            view.findViewById<TextView>(R.id.is_available).text = bookAvailable
             view.findViewById<TextView>(R.id.is_available).setTextColor(Color.parseColor("#008000"));
         }else{
-            view.findViewById<TextView>(R.id.is_available).text = "Taken"
+            view.findViewById<TextView>(R.id.is_available).text = bookTaken
             view.findViewById<TextView>(R.id.is_available).setTextColor(Color.parseColor("#FF8C00"));
         }
 
@@ -62,10 +65,10 @@ class MyBooksListAdapter(var books_list: ArrayList<HashMap<String, Any>>, var us
                 .update("isAvailable", newState)
                 .addOnSuccessListener {
                     if (newState){
-                        view.findViewById<TextView>(R.id.is_available).text = "Available"
+                        view.findViewById<TextView>(R.id.is_available).text = bookAvailable
                         view.findViewById<TextView>(R.id.is_available).setTextColor(Color.parseColor("#008000"));
                     }else{
-                        view.findViewById<TextView>(R.id.is_available).text = "Taken"
+                        view.findViewById<TextView>(R.id.is_available).text = bookTaken
                         view.findViewById<TextView>(R.id.is_available).setTextColor(Color.parseColor("#FF8C00"));
                     }
                 }

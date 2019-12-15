@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.book_search_activity.*
 import java.io.Serializable
 
 
-class MyBooksActivity : AppCompatActivity() {
+class MyBooksActivity : MenuActivity() {
     lateinit var adapter : MyBooksListAdapter
     var my_books_list = ArrayList<HashMap<String, Any>>()
 
@@ -29,12 +29,12 @@ class MyBooksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_books_activity)
         var userId = intent.getStringExtra("userId")
-        adapter = MyBooksListAdapter(my_books_list, userId)
+
+        adapter = MyBooksListAdapter(this, my_books_list, userId)
         book_listview.setAdapter(adapter)
 
 
         val db = FirebaseFirestore.getInstance()
-        Log.i("My books activity", "UserId ${userId}")
         db.collection("books").whereEqualTo("ownerUserId", userId)
             .get()
             .addOnSuccessListener { documents ->

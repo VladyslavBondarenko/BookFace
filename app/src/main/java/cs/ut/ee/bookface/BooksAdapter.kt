@@ -45,6 +45,9 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
         }
         view.findViewById<TextView>(R.id.book_author).text = bookAuthor
 
+        view.findViewById<TextView>(R.id.add_book_btn).isEnabled = true
+        view.findViewById<TextView>(R.id.add_book_btn).isClickable = true
+
         // Add book to the list
         view.findViewById<TextView>(R.id.add_book_btn).setOnClickListener {
             // CHECK IF BOOK ALREADY IN THE LIST
@@ -57,12 +60,11 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                 .addOnSuccessListener { documents ->
 
                     for (document in documents) {
-                        Log.i("AddNewBook", document.id)
                         booksInList.add(document.get("id") as String)
                     }
                     if (booksInList.contains(book.id)){
-                        Toast.makeText(c, "The book is already in your list!", Toast.LENGTH_LONG).show()
-                        Log.d("AddNewBook", "Book with if ${book.id} is already in the list")
+                        var toastText : String = c.getString(R.string.book_already_in_list)
+                        Toast.makeText(c, toastText, Toast.LENGTH_LONG).show()
                         view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
                         view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
                     }else{
@@ -77,8 +79,8 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                         db.collection("books")
                             .add(bookDbObject)
                             .addOnSuccessListener { documentReference ->
-                                Log.d("Firebase", "DocumentSnapshot added with ID: ${documentReference.id}")
-                                Toast.makeText(c, "Book is added to your list", Toast.LENGTH_LONG).show()
+                                var toastText : String = c.getString(R.string.book_added)
+                                Toast.makeText(c, toastText, Toast.LENGTH_LONG).show()
                                 view.findViewById<TextView>(R.id.add_book_btn).isEnabled = false
                                 view.findViewById<TextView>(R.id.add_book_btn).isClickable = false
                             }
@@ -91,25 +93,6 @@ class BooksAdapter(var c : Context, var books_list: List<Book>, var user_id : St
                     Log.w("Firebase", "Error getting documents: ", e)
                 }
 
-
-//            val bookDbObject = hashMapOf(
-//                "id" to book.id,
-//                "title" to book.volumeInfo.title,
-//                "author" to bookAuthor,
-//                "description" to book.volumeInfo.description,
-//                "ownerUserId" to user_id,
-//                "isAvailiable" to true
-//            )
-//            db.collection("books")
-//                .add(bookDbObject)
-//                .addOnSuccessListener { documentReference ->
-//                    Log.d("Firebase", "DocumentSnapshot added with ID: ${documentReference.id}")
-//                    Toast.makeText(c, "Book is added to your list", Toast.LENGTH_LONG).show()
-//
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.w("Firebase", "Error adding document", e)
-//                }
         }
         return view
 
