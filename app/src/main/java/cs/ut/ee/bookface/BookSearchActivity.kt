@@ -1,6 +1,5 @@
 package cs.ut.ee.bookface
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,7 +18,7 @@ import cs.ut.ee.bookface.models.Book
 import kotlinx.android.synthetic.main.book_search_activity.*
 
 
-class BookSearchActivity : AppCompatActivity() {
+class BookSearchActivity : MenuActivity() {
     lateinit var adapter : BooksAdapter
     var book_list = ArrayList<Book>()
     val interceptor = HttpLoggingInterceptor().apply {

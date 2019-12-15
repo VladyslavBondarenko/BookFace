@@ -14,17 +14,11 @@
         android:title="@string/my_friends_books_button"
         app:showAsAction="never"></item>
     <item
+        android:id="@+id/my_profile_button"
+        android:title="@string/my_profile_button"
+        app:showAsAction="never"></item>
+    <item
         android:id="@+id/logout_button"
         android:title="@string/logout_button"
         app:showAsAction="never"></item>
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </menu>

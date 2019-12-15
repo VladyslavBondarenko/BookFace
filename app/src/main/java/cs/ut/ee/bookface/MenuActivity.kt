@@ -38,6 +38,18 @@ abstract class MenuActivity : AppCompatActivity() {
             R.id.my_friends_books_button -> {
                 return true
             }
+            R.id.my_profile_button -> {
+                FBManager.getUserId { userId ->
+                    DBUsers.getUserById(userId) { user ->
+                        if (user != null) {
+                            val intent = Intent(this, UserProfile::class.java)
+                            intent.putExtra("name", user["name"] as String)
+                            intent.putExtra("picture", user["picture"] as String)
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
             R.id.logout_button -> {
                 FBManager.logout()
                 finish()
