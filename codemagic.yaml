@@ -1,0 +1,21 @@
+workflows:
+  default-workflow:
+    name: Default Workflow
+    scripts:
+      - |
+        # set up debug key.properties
+        rm -f ~/.android/debug.keystore
+        keytool -genkeypair \
+          -alias androiddebugkey \
+          -keypass android \
+          -keystore ~/.android/debug.keystore \
+          -storepass android \
+          -dname 'CN=Android Debug,O=Android,C=US' \
+          -keyalg 'RSA' \
+          -keysize 2048 \
+          -validity 10000
+      - |
+        # set up local properties
+        cd $FCI_BUILD_DIR && ./gradlew assembleDebug
+    artifacts:
+      - CourtCounter/app/build/**/outputs/**/*.apk
