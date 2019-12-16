@@ -13,6 +13,9 @@ class MyBooksActivity : MenuActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_books_activity)
+
+        supportActionBar!!.title = resources.getString(R.string.my_books_button)
+
         var userId = intent.getStringExtra("userId")
 
         adapter = MyBooksListAdapter(this, my_books_list, userId)

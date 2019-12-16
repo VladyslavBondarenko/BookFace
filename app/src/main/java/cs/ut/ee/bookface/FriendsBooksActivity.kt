@@ -14,6 +14,9 @@ class FriendsBooksActivity : MenuActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.friends_books_activity)
+
+        supportActionBar!!.title = resources.getString(R.string.my_friends_books_button)
+
         val userId = intent.getStringExtra("userId")
         expandableListView = this.findViewById(R.id.friends_books_listview)
         if (expandableListView != null) {

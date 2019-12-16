@@ -33,6 +33,9 @@ class BookSearchActivity : MenuActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.book_search_activity)
+
+        supportActionBar!!.title = resources.getString(R.string.add_new_book)
+
         val userId = intent.getStringExtra("userId")
         adapter = BooksAdapter(this, book_list, userId)
         book_listview.adapter = adapter

@@ -12,6 +12,8 @@ class UserProfile : MenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_profile)
 
+        supportActionBar!!.title = resources.getString(R.string.my_profile_button)
+
         nameView.text = intent.getStringExtra("name")
         val pictureUrl = intent.getStringExtra("picture")
 
