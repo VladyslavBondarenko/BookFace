@@ -19,16 +19,16 @@ import kotlinx.android.synthetic.main.book_search_activity.*
 class BookSearchActivity : MenuActivity() {
     lateinit var adapter: BooksAdapter
     var book_list = ArrayList<Book>()
-    private val interceptor = HttpLoggingInterceptor().apply {
+    val interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val retrofit = Retrofit.Builder()
+    val retrofit = Retrofit.Builder()
         .baseUrl("https://www.googleapis.com/books/v1/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(OkHttpClient.Builder().addInterceptor(interceptor).build())
         .build()!!
-    private val bookService: BooksService = retrofit.create(BooksService::class.java)
+    val bookService: BooksService = retrofit.create(BooksService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class BookSearchActivity : MenuActivity() {
         }
     }
 
-    private fun searchBooks(query: String) {
+    fun searchBooks(query: String) {
         progressBar.visibility = View.VISIBLE
         bookService.getBooks(query, 0, 20)
             .enqueue(object : Callback<BookResponse> {

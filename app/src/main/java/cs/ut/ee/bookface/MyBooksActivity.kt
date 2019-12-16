@@ -3,7 +3,7 @@ package cs.ut.ee.bookface
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.book_search_activity.*
+import kotlinx.android.synthetic.main.my_books_activity.*
 
 
 class MyBooksActivity : MenuActivity() {

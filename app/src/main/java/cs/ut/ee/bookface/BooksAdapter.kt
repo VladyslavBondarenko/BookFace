@@ -38,8 +38,12 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
         val book: Book = getItem(position)
         view.findViewById<TextView>(R.id.book_title).text = book.volumeInfo.title
         val bookAuthor: String
-        bookAuthor =
-            book.volumeInfo.authors.joinToString(separator = ",", postfix = "", prefix = "")
+        if (book.volumeInfo.authors == null) {
+            bookAuthor = "Unknown author"
+        } else {
+            bookAuthor =
+                book.volumeInfo.authors.joinToString(separator = ",", postfix = "", prefix = "")
+        }
         view.findViewById<TextView>(R.id.book_author).text = bookAuthor
 
         view.findViewById<TextView>(R.id.add_book_btn).isEnabled = true
@@ -55,7 +59,6 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
             db.collection("books").whereEqualTo("ownerUserId", user_id)
                 .get()
                 .addOnSuccessListener { documents ->
-
                     for (document in documents) {
                         booksInList.add(document.get("id") as String)
                     }
