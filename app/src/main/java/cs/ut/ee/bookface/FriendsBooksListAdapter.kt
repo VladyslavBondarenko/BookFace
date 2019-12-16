@@ -14,14 +14,13 @@ import java.util.*
 
 class FriendsBooksListAdapter(
     var c: Context,
-    var books_list: ArrayList<HashMap<String, Any>>,
-    var user_id: String
+    var books_list: ArrayList<HashMap<String, Any>>
 ) : BaseExpandableListAdapter() {
     override fun getGroup(position: Int): HashMap<String, Any> {
         return books_list[position]
     }
 
-    override fun isChildSelectable(p0: Int, p1: Int): Boolean {
+    override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
         return true
     }
 
