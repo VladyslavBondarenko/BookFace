@@ -1,17 +1,20 @@
 package cs.ut.ee.bookface
 
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
+import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.user_profile.*
 import java.net.URL
@@ -31,6 +34,7 @@ class UserProfile : MenuActivity() {
 
         val btnSave = findViewById<Button>(R.id.SaveBtn)
         val messageEditText = findViewById<EditText>(R.id.messageEditText)
+        listedTouchOutside(userProfileWrapper)
 
 
         messageEditText.setOnEditorActionListener { _, actionId, event ->
@@ -43,6 +47,7 @@ class UserProfile : MenuActivity() {
                                 messageEditText.text.toString()
                             )
                         }
+                        hideSoftKeyboard(this)
                         Toast.makeText(this, getString(R.string.messageUpdate), Toast.LENGTH_LONG)
                             .show()
                     }
@@ -73,6 +78,7 @@ class UserProfile : MenuActivity() {
                             messageEditText.text.toString()
                         )
                     }
+                    hideSoftKeyboard(this)
                     Toast.makeText(this, getString(R.string.messageUpdate), Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener {
@@ -81,6 +87,27 @@ class UserProfile : MenuActivity() {
                 }
         }
         MyAsyncTask().execute(pictureUrl)
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        if (activity.currentFocus != null) {
+            val inputMethodManager =
+                activity.getSystemService(
+                    Activity.INPUT_METHOD_SERVICE
+                ) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                activity.currentFocus!!.windowToken, 0
+            )
+        }
+    }
+
+    fun listedTouchOutside(view: View) {
+        if (view !is EditText) {
+            view.setOnTouchListener({ v, event ->
+                hideSoftKeyboard(this)
+                false
+            })
+        }
     }
 
     inner class MyAsyncTask : AsyncTask<String, Void, Bitmap>() {
