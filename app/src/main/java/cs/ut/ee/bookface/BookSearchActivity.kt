@@ -36,7 +36,7 @@ class BookSearchActivity : MenuActivity() {
 
         supportActionBar!!.title = resources.getString(R.string.add_new_book)
 
-        val userId = intent.getStringExtra("userId")
+        val userId = intent.getStringExtra("userId") as String
         adapter = BooksAdapter(this, book_list, userId)
         book_listview.adapter = adapter
 

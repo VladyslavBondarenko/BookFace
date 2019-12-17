@@ -39,7 +39,7 @@ class MyBooksListAdapter(
         view.findViewById<TextView>(R.id.book_title).text = book["title"] as String
         view.findViewById<TextView>(R.id.book_author).text = book["author"] as String
 
-        var bookAvailable = c.getString(R.string.bookAvailable)
+        var bookAvailable = c.getString(R.string.available)
         var bookTaken: String = c.getString(R.string.bookTaken)
 
         if (book["isAvailable"] as Boolean) {
