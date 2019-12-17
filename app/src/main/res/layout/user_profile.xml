@@ -33,48 +33,13 @@
         android:text="@string/default_username"
         android:textColor="@color/com_facebook_blue" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
     <Button
         android:id="@+id/delete_data_btn"
         style="@style/com_facebook_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="@string/delete_all_my_books" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_margin="8dp"
-        android:labelFor="@+id/messageEditText"
-        android:text="@string/change_your_book_request_message"
-        android:textColor="@color/com_facebook_blue" />
-
-    <EditText
-        android:id="@+id/messageEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:ems="10"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine" />
-
-    <Button
-        android:id="@+id/SaveBtn"
-        style="@style/com_facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="15dp"
-        android:text="@string/save" />
 
 </LinearLayout>

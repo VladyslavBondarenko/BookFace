@@ -4,10 +4,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
+
 import android.widget.EditText
 import android.widget.Toast
+
+
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.user_profile.*
 import java.net.URL
@@ -23,8 +25,11 @@ class UserProfile : MenuActivity() {
         val pictureUrl = intent.getStringExtra("picture")
         val db = FirebaseFirestore.getInstance()
         val btn_data_delete = findViewById<Button>(R.id.delete_data_btn)
+
         val btnSave = findViewById<Button>(R.id.SaveBtn)
         val messageEditText = findViewById<EditText>(R.id.messageEditText)
+
+
         btn_data_delete.setOnClickListener {
             db.collection("books").whereEqualTo("ownerUserId", userId).get()
                 .addOnSuccessListener { documents ->
@@ -57,6 +62,8 @@ class UserProfile : MenuActivity() {
 
                 }
         }
+
+
 
         MyAsyncTask().execute(pictureUrl)
     }

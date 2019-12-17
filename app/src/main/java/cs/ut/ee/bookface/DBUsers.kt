@@ -53,13 +53,17 @@ class DBUsers {
                 }
         }
 
-        fun updateUser(documentId: String, user: HashMap<String, Serializable>, callback: () -> Unit) {
+        fun updateUser(
+            documentId: String,
+            user: HashMap<String, Serializable>,
+            callback: () -> Unit
+        ) {
             val db = FirebaseFirestore.getInstance()
             db.collection("users")
                 .document(documentId).update(user as HashMap<String?, Any?>)
                 .addOnSuccessListener { documentReference ->
-                        Log.d("Firebase", "DocumentSnapshot updated: $documentReference")
-                        callback()
+                    Log.d("Firebase", "DocumentSnapshot updated: $documentReference")
+                    callback()
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error updating document", e)
