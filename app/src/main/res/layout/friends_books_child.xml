@@ -11,12 +11,27 @@
         android:layout_height="wrap_content"
         android:padding="10dp" />
 
-    <Button
-        android:id="@+id/contactFriend"
-        style="@style/com_facebook_button_send"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10dp"
-        android:text="@string/contact_friend" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/contactFriend"
+            style="@style/com_facebook_button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="@string/contact_friend" />
+
+        <TextView
+            android:id="@+id/ownerView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="owner" />
+    </LinearLayout>
+
 </LinearLayout>

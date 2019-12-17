@@ -3,6 +3,7 @@ package cs.ut.ee.bookface
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 
 import android.view.View
@@ -91,6 +92,8 @@ class FriendsBooksListAdapter(
         }
         val book: HashMap<String, Any> = getGroup(groupPosition)
         view.findViewById<TextView>(R.id.expandedListItem).text = book["description"] as String
+        Log.i("test", book.get("owner") as String)
+        view.ownerView.text = book.get("owner") as String
 
         FBManager.getUserId { userId ->
             DBUsers.getUserById(userId) { user ->

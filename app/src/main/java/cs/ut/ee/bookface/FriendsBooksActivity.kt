@@ -32,12 +32,19 @@ class FriendsBooksActivity : MenuActivity() {
                                 .get()
                                 .addOnSuccessListener { documents ->
                                     for (document in documents) {
+                                        var owner = ""
+                                        DBUsers.getUserById(document.get("ownerUserId") as String) { user ->
+                                            if (user != null) {
+                                                owner = user.get("name") as String
+                                            }
+                                        }
                                         val book = hashMapOf(
                                             "documentId" to document.id,
                                             "title" to document.get("title") as String,
                                             "author" to document.get("author") as String,
                                             "description" to document.get("description") as String,
-                                            "isAvailable" to document.get("isAvailable") as Boolean
+                                            "isAvailable" to document.get("isAvailable") as Boolean,
+                                            "owner" to owner
                                         )
                                         friends_books_list.add(book)
                                     }
