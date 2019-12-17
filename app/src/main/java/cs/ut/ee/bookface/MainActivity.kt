@@ -83,9 +83,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openUserProfile(user: HashMap<String, Serializable>) {
+        var user_id = user["id"]
         val intent = Intent(this, UserProfile::class.java)
         intent.putExtra("name", user["name"] as String)
         intent.putExtra("picture", user["picture"] as String)
+        intent.putExtra("userId", user_id)
         startActivity(intent)
     }
 }
