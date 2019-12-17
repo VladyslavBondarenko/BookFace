@@ -55,6 +55,11 @@ class MainActivity : AppCompatActivity() {
         login_button.registerCallback(callbackManager, FBLoginCallback)
     }
 
+    public override fun onStart() {
+        super.onStart()
+        trackLogin()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
