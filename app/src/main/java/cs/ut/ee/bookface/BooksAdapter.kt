@@ -72,10 +72,14 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
                             "id" to book.id,
                             "title" to book.volumeInfo.title,
                             "author" to bookAuthor,
-                            "description" to book.volumeInfo.description,
                             "ownerUserId" to user_id,
                             "isAvailable" to true
                         )
+                        if (book.volumeInfo.description == null) {
+                            bookDbObject["description"] = " "
+                        } else {
+                            bookDbObject["description"] = book.volumeInfo.description
+                        }
                         db.collection("books")
                             .add(bookDbObject)
                             .addOnSuccessListener {
