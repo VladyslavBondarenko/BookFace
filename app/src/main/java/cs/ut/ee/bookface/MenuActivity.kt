@@ -60,6 +60,7 @@ abstract class MenuActivity : AppCompatActivity() {
                             val intent = Intent(this, UserProfile::class.java)
                             intent.putExtra("name", user["name"] as String)
                             intent.putExtra("picture", user["picture"] as String)
+                            intent.putExtra("message_template", user["message_template"] as String)
                             intent.putExtra("userId", user_id)
                             startActivity(intent)
                         }

@@ -28,6 +28,7 @@ class UserProfile : MenuActivity() {
         supportActionBar!!.title = resources.getString(R.string.my_profile_button)
         val userId = intent.getStringExtra("userId")
         nameView.text = intent.getStringExtra("name")
+        messageEditText.hint = intent.getStringExtra("message_template")
         val pictureUrl = intent.getStringExtra("picture")
         val db = FirebaseFirestore.getInstance()
         val btn_data_delete = findViewById<Button>(R.id.delete_data_btn)
