@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
                     DBUsers.getUserById(user["id"] as String) { dbUser ->
                         if (dbUser == null) {
                             user.put("message_template", resources.getString(R.string.message_template))
-                            DBUsers.addUserToDatabase(user) { actionsAfterLogin() }
+                            DBUsers.addUserToDatabase(user) { trackLogin() }
                         } else {
 //                            val updateFields  = user as HashMap<String?, Any?>
 //                            updateFields.put("message_template", null)
-                            DBUsers.updateUser(dbUser.get("documentId") as String, user) { actionsAfterLogin() }
+                            DBUsers.updateUser(dbUser.get("documentId") as String, user) { trackLogin() }
                         }
                     }
                 }
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun trackLogin() {
+        actionsAfterLogin()
         val accessTokenTracker = object : AccessTokenTracker() {
             override fun onCurrentAccessTokenChanged(
                 oldAccessToken: AccessToken?,

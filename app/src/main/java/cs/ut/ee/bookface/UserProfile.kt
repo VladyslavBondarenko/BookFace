@@ -34,7 +34,7 @@ class UserProfile : MenuActivity() {
 
         val btnSave = findViewById<Button>(R.id.SaveBtn)
         val messageEditText = findViewById<EditText>(R.id.messageEditText)
-        listedTouchOutside(userProfileWrapper)
+        listenTouchOutside(userProfileWrapper)
 
 
         messageEditText.setOnEditorActionListener { _, actionId, event ->
@@ -101,7 +101,7 @@ class UserProfile : MenuActivity() {
         }
     }
 
-    fun listedTouchOutside(view: View) {
+    fun listenTouchOutside(view: View) {
         if (view !is EditText) {
             view.setOnTouchListener({ v, event ->
                 hideSoftKeyboard(this)
