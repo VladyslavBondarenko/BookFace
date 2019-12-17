@@ -1,18 +1,21 @@
 package cs.ut.ee.bookface
 
+
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
-
 import android.widget.EditText
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-
-
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.user_profile.*
 import java.net.URL
+
 
 class UserProfile : MenuActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +32,34 @@ class UserProfile : MenuActivity() {
         val btnSave = findViewById<Button>(R.id.SaveBtn)
         val messageEditText = findViewById<EditText>(R.id.messageEditText)
 
+
+        messageEditText.setOnEditorActionListener { _, actionId, event ->
+            if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                db.collection("users").whereEqualTo("id", userId).get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            document.reference.update(
+                                "message_template",
+                                messageEditText.text.toString()
+                            )
+                        }
+                        Toast.makeText(this, getString(R.string.messageUpdate), Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, getString(R.string.SWW), Toast.LENGTH_LONG).show()
+
+                    }
+            }
+            false
+        }
         btn_data_delete.setOnClickListener {
             db.collection("books").whereEqualTo("ownerUserId", userId).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         document.reference.delete()
+                        Toast.makeText(this, getString(R.string.booksDeleted), Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
         }
@@ -47,10 +73,10 @@ class UserProfile : MenuActivity() {
                             messageEditText.text.toString()
                         )
                     }
-                    Toast.makeText(this, "Message update successful", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.messageUpdate), Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.SWW), Toast.LENGTH_LONG).show()
 
                 }
         }
