@@ -76,7 +76,7 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
                             "isAvailable" to true
                         )
                         if (book.volumeInfo.description == null) {
-                            bookDbObject["description"] = " "
+                            bookDbObject["description"] = "No description available"
                         } else {
                             bookDbObject["description"] = book.volumeInfo.description
                         }
