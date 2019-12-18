@@ -1,8 +1,12 @@
 package cs.ut.ee.bookface
 
+import android.content.res.Resources
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DBUsers {
     companion object {
@@ -21,6 +25,7 @@ class DBUsers {
                             "email" to document.get("email") as String,
                             "picture" to document.get("picture") as String,
                             "friends" to document.get("friends") as ArrayList<String>,
+                            "message_template" to document.get("message_template") as String,
                             "documentId" to document.id
                         )
                         callback(user)
@@ -34,27 +39,31 @@ class DBUsers {
                 }
         }
 
-        fun addUserToDatabase(user: HashMap<String, Serializable>) {
+        fun addUserToDatabase(user: HashMap<String, Serializable>, callback: () -> Unit) {
             val db = FirebaseFirestore.getInstance()
             db.collection("users")
                 .add(user)
                 .addOnSuccessListener { documentReference ->
                     Log.d("Firebase", "DocumentSnapshot added with ID: ${documentReference.id}")
+                    callback()
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error adding document", e)
+                    callback()
                 }
         }
 
-        fun updateUser(documentId: String, user: HashMap<String, Serializable>) {
+        fun updateUser(documentId: String, user: HashMap<String, Serializable>, callback: () -> Unit) {
             val db = FirebaseFirestore.getInstance()
             db.collection("users")
-                .document(documentId).set(user)
+                .document(documentId).update(user as HashMap<String?, Any?>)
                 .addOnSuccessListener { documentReference ->
-                    Log.d("Firebase", "DocumentSnapshot updated: $documentReference")
+                        Log.d("Firebase", "DocumentSnapshot updated: $documentReference")
+                        callback()
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firebase", "Error updating document", e)
+                    callback()
                 }
         }
     }
