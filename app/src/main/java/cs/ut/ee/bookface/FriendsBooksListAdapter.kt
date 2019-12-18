@@ -45,7 +45,7 @@ class FriendsBooksListAdapter(
         view.findViewById<TextView>(R.id.book_title2).text = book["title"] as String
         view.findViewById<TextView>(R.id.book_author2).text = book["author"] as String
 
-        var bookAvailable = c.getString(R.string.bookAvailable)
+        var bookAvailable = c.getString(R.string.available)
         var bookTaken: String = c.getString(R.string.bookTaken)
 
         if (book["isAvailable"] as Boolean) {
