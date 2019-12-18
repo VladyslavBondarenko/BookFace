@@ -29,7 +29,6 @@ class UserProfile : MenuActivity() {
         val btnSave = findViewById<Button>(R.id.SaveBtn)
         val messageEditText = findViewById<EditText>(R.id.messageEditText)
 
-
         btn_data_delete.setOnClickListener {
             db.collection("books").whereEqualTo("ownerUserId", userId).get()
                 .addOnSuccessListener { documents ->
@@ -38,13 +37,6 @@ class UserProfile : MenuActivity() {
                     }
                 }
         }
-
-        //this crashes the app
-        /*db.collection("users").whereEqualTo("id", userId).get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                messageEditText.hint = document.get("message_template") as String
-            }
-        }*/
 
         btnSave.setOnClickListener {
             db.collection("users").whereEqualTo("id", userId).get()
@@ -62,9 +54,6 @@ class UserProfile : MenuActivity() {
 
                 }
         }
-
-
-
         MyAsyncTask().execute(pictureUrl)
     }
 

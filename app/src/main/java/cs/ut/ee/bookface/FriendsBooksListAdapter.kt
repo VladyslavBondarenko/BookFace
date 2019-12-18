@@ -1,6 +1,7 @@
 package cs.ut.ee.bookface
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import kotlinx.android.synthetic.main.friends_books_child.view.*
 
 import java.util.*
 
@@ -88,6 +91,28 @@ class FriendsBooksListAdapter(
         }
         val book: HashMap<String, Any> = getGroup(groupPosition)
         view.findViewById<TextView>(R.id.expandedListItem).text = book["description"] as String
+
+        FBManager.getUserId { userId ->
+            DBUsers.getUserById(userId) { user ->
+                view.contactFriend.setOnClickListener {
+                    var message = ""
+                    if (user != null) {
+                        val question = user.get("message_template") as String
+                        val title = book.get("title") as String
+                        val author = book.get("author") as String
+                        message =  "$question '$title' by $author"
+                    }
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, message)
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(c, shareIntent, null)
+                }
+            }
+        }
+
         return view
     }
 
