@@ -18,7 +18,7 @@ class MyBooksActivity : MenuActivity() {
 
         var userId = intent.getStringExtra("userId")
 
-        adapter = MyBooksListAdapter(this, my_books_list, userId)
+        adapter = MyBooksListAdapter(this, my_books_list)
         book_listview.adapter = adapter
 
 

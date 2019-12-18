@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
                 FBManager.requestUserData { user ->
                     DBUsers.getUserById(user["id"] as String) { dbUser ->
                         if (dbUser == null) {
-                            user.put("message_template", resources.getString(R.string.message_template))
+                            user["message_template"] = resources.getString(R.string.message_template)
                             DBUsers.addUserToDatabase(user) { trackLogin() }
                         } else {
 //                            val updateFields  = user as HashMap<String?, Any?>
 //                            updateFields.put("message_template", null)
-                            DBUsers.updateUser(dbUser.get("documentId") as String, user) { trackLogin() }
+                            DBUsers.updateUser(dbUser["documentId"] as String, user) { trackLogin() }
                         }
                     }
                 }
