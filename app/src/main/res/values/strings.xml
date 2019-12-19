@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">bookface</string>
+    <string name="my_books_button">My books</string>
+    <string name="my_friends_books_button">Books of my friends</string>
+    <string name="user_photo">My photo</string>
+    <string name="logout_button">Logout</string>
+    <string name="default_username">Username is not loaded</string>
+    <string name="add_new_book">Add new book</string>
+    <string name="my_profile_button">My profile</string>
+    <string name="available">Available</string>
+    <string name="bookTaken">Taken</string>
+    <string name="book_info_hint">Book title or author</string>
+    <string name="book_already_in_list">The book is already in your list!</string>
+    <string name="book_added">Book is added to your list!</string>
+    <string name="add_to_list">Add to list</string>
+    <string name="contact_friend">Contact friend</string>
+    <string name="delete_all_my_books">Delete all my books</string>
+    <string name="change_your_book_request_message">Change your book request message</string>
+    <string name="save">Save</string>
+    <string name="message_template">Hi! Could you lend me this book please?</string>
+    <string name="SWW">Something went wrong</string>
+    <string name="booksDeleted">All your books are deleted</string>
+    <string name="messageUpdate">Message update successful</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">bookface</string>
+    <string name="my_books_button">Minu raamatud</string>
+    <string name="my_friends_books_button">Minu sõprade raamatud</string>
+    <string name="user_photo">Minu foto</string>
+    <string name="logout_button">Logout</string>
+    <string name="default_username">Kasutajat ei laadita</string>
+    <string name="add_new_book">Lisa uus raamat</string>
+    <string name="my_profile_button">Minu profiil</string>
+    <string name="available">Vaba</string>
+    <string name="bookTaken">Võetud</string>
+    <string name="book_info_hint">Pealkiri või autor</string>
+    <string name="book_already_in_list">Raamat on juba Sinu listis!</string>
+    <string name="book_added">Raamat on lisatud Sinu listi!</string>
+    <string name="add_to_list">Lisa raamat</string>
+    <string name="contact_friend">Kirjuta sõbrale</string>
+    <string name="delete_all_my_books">Kustuta kõik raamatud</string>
+    <string name="change_your_book_request_message">Muuda oma sõnumit</string>
+    <string name="save">Salvesta</string>
+    <string name="message_template">Tere! Kas te saaksite mulle selle raamatu laenutada?</string>
+    <string name="SWW">Miskit läks valesti</string>
+    <string name="booksDeleted">Kõik sinu raamatud on kustutatud</string>
+    <string name="messageUpdate">Sõnum on uuendatud</string>
+</resources>

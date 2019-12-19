@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">bookface</string>
+    <string name="my_books_button">Мои книги</string>
+    <string name="my_friends_books_button">Книги моих друзей</string>
+    <string name="user_photo">Моё фото</string>
+    <string name="logout_button">Выйти</string>
+    <string name="default_username">Имя пользователя не найдено</string>
+    <string name="add_new_book">Добавь книгу</string>
+    <string name="my_profile_button">Мой профиль</string>
+    <string name="available">Доступна</string>
+    <string name="bookTaken">Занята</string>
+    <string name="book_info_hint">Название книги или автор</string>
+    <string name="book_already_in_list">Книга уже в твоем списке!</string>
+    <string name="book_added">Книга добавлена в твой список!</string>
+    <string name="add_to_list">Добавить в список</string>
+    <string name="contact_friend">Отправить сообщение</string>
+    <string name="delete_all_my_books">Удалить все мои книги</string>
+    <string name="change_your_book_request_message">Изменить мое сообщение при запросе книги</string>
+    <string name="save">Save</string>
+    <string name="message_template">Привет! Ты мог бы дать мне эту книгу почитать, пожалуйста?</string>
+    <string name="SWW">Что-то пошло не так</string>
+    <string name="booksDeleted">Все книги удалены</string>
+    <string name="messageUpdate">Сохранить</string>
+</resources>
