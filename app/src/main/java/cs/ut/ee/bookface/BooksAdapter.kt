@@ -38,7 +38,7 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
         val book: Book = getItem(position)
         view.findViewById<TextView>(R.id.book_title).text = book.volumeInfo.title
         val bookAuthor: String
-        if (book.volumeInfo.authors == null) {
+        if (book.volumeInfo.authors.isEmpty()) {
             bookAuthor = "Unknown author"
         } else {
             bookAuthor =
@@ -75,7 +75,7 @@ class BooksAdapter(var c: Context, var books_list: List<Book>, var user_id: Stri
                             "ownerUserId" to user_id,
                             "isAvailable" to true
                         )
-                        if (book.volumeInfo.description == null) {
+                        if (book.volumeInfo.description.isBlank()) {
                             bookDbObject["description"] = "No description available"
                         } else {
                             bookDbObject["description"] = book.volumeInfo.description

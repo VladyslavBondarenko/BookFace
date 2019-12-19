@@ -18,9 +18,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FacebookSdk.sdkInitialize(applicationContext)
-        AppEventsLogger.activateApp(this)
-
         callbackManager = CallbackManager.Factory.create()
 
         trackLogin()
